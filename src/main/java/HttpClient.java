@@ -78,12 +78,12 @@ public class HttpClient {
             c.displayResponse();
             c.disconnect();
 
-            System.out.println("Méthode POST :");
+            /*System.out.println("Méthode POST :");
 
             c.connect("POST");
             c.post("<cv_entry> <id>4</id> <firstname>George</firstname> <name>Leyeti</name> </cv_entry>");
             c.displayResponse();
-            c.disconnect();
+            c.disconnect();*/
 
         } catch (Exception e) {
             e.printStackTrace();
