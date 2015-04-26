@@ -9,6 +9,7 @@ public class GUI extends  JFrame{
     JPanel postInformations, panTerminal;
     FlowLayout fl;
     JTextArea terminal;
+    JScrollPane scroll;
     final String urlOS = "http://lw2-barbaluc.rhcloud.com/resume";
 
     public GUI(String name) {
@@ -77,19 +78,17 @@ public class GUI extends  JFrame{
             }
         });
 
-        //Panel 2 contenant le terminal
-        terminal = new JTextArea();
+        panTerminal=new JPanel();
 
-        JScrollPane scroll = new JScrollPane (terminal,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scroll.setBounds(new Rectangle(-4, 1, 397, 198));
+        terminal = new JTextArea(8, 25);
+        terminal.setEditable(false);
         terminal.setBackground(Color.BLACK);
         terminal.setForeground(Color.WHITE);
-        terminal.setPreferredSize(new Dimension(250, 100));
 
+        scroll = new JScrollPane(terminal);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-
-        panTerminal.add(scroll, null);
+        panTerminal.add(scroll);
 
 
         pane.add(postInformations, BorderLayout.NORTH);
