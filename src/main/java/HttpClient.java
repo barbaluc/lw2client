@@ -36,20 +36,22 @@ public class HttpClient {
         server.disconnect();
     }
 
-    public void displayResponse() throws Exception {
-        String line;
+    public String displayResponse() throws Exception {
+        String line, result = "";
 
         try {
             BufferedReader s = new BufferedReader(new InputStreamReader(server.getInputStream()));
             line = s.readLine();
             while (line != null) {
                 System.out.println(line);
+                result = line;
                 line = s.readLine();
             }
             s.close();
         } catch (Exception e) {
             throw new Exception("Unable to read input stream");
         }
+        return result;
     }
 
     public void post(String s) throws Exception {

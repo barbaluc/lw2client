@@ -5,7 +5,11 @@ public class GUI extends  JFrame{
 
     JLabel labId, labFirstname, labName;
     JTextField tfId, tfFirstname, tfName;
-    JButton post;
+    JButton post, get;
+    JPanel postInformations, panTerminal;
+    FlowLayout fl;
+    JTextArea terminal;
+    final String urlOS = "http://lw2-barbaluc.rhcloud.com/resume";
 
     public GUI(String name) {
         super(name);
@@ -13,11 +17,14 @@ public class GUI extends  JFrame{
     }
 
     public void addComponentsToPane(final Container pane) {
-        //Panel
+        //Panel 1 contenant le formulaire
         GridLayout gl = new GridLayout(4, 2);
-        final JPanel postInformations = new JPanel();
+        postInformations = new JPanel();
         postInformations.setLayout(gl);
 
+        fl = new FlowLayout();
+        panTerminal = new JPanel();
+        panTerminal.setLayout(fl);
 
         labId = new JLabel(" id : ");
         labFirstname = new JLabel(" firstname : ");
@@ -28,6 +35,7 @@ public class GUI extends  JFrame{
         tfName = new JTextField("insert a name");
 
         post = new JButton("POST");
+        get = new JButton("GET");
 
         postInformations.add(labId);
         postInformations.add(tfId);
@@ -36,24 +44,18 @@ public class GUI extends  JFrame{
         postInformations.add(labName);
         postInformations.add(tfName);
         postInformations.add(post);
+        postInformations.add(get);
 
         post.addActionListener((e) -> {
             System.out.println("POST");
             try {
-                HttpClient c = new HttpClient("http://lw2-barbaluc.rhcloud.com/resume");
-                c.connect("GET");
-                System.out.println("Méthode GET :");
-                c.displayResponse();
-                c.disconnect();
-
+                HttpClient c = new HttpClient(urlOS);
                 System.out.println("Méthode POST :");
-
                 c.connect("POST");
-                //c.post("<cv_entry> <id>4</id> <firstname>George</firstname> <name>Leyeti</name> </cv_entry>");
                 c.post("<cv_entry><id>" + tfId.getText() + "</id><firstname>" + tfFirstname.getText() + "</firstname><name>" + tfName.getText()
                         + "</name> </cv_entry>");
 
-                c.displayResponse();
+                terminal.setText(terminal.getText() + c.displayResponse() + "\n");
                 c.disconnect();
 
             } catch (Exception exception) {
@@ -61,8 +63,37 @@ public class GUI extends  JFrame{
             }
         });
 
+        get.addActionListener((e) -> {
+            System.out.println("GET");
+            try {
+                HttpClient c = new HttpClient(urlOS);
+                c.connect("GET");
+                System.out.println("Méthode GET :");
+                terminal.setText(terminal.getText() + c.displayResponse() + "\n");
+                c.disconnect();
 
-        pane.add(postInformations);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+
+        //Panel 2 contenant le terminal
+        terminal = new JTextArea();
+
+        JScrollPane scroll = new JScrollPane (terminal,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setBounds(new Rectangle(-4, 1, 397, 198));
+        terminal.setBackground(Color.BLACK);
+        terminal.setForeground(Color.WHITE);
+        terminal.setPreferredSize(new Dimension(250, 100));
+
+
+
+        panTerminal.add(scroll, null);
+
+
+        pane.add(postInformations, BorderLayout.NORTH);
+        pane.add(panTerminal, BorderLayout.SOUTH);
 
     }
 
